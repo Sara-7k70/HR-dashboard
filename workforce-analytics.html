@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workforce Analytics</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f6f8f6;
+    color: #26382e;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 245px;
+    background: #173e2d;
+    color: white;
+    padding: 30px 20px;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 700;
+    margin-bottom: 45px;
+}
+
+.logo span {
+    color: #a7c9ae;
+}
+
+.menu-title {
+    color: #a5b9aa;
+    font-size: 11px;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.nav a {
+    display: block;
+    text-decoration: none;
+    color: #d4e1d7;
+    padding: 13px 15px;
+    border-radius: 9px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.nav a.active,
+.nav a:hover {
+    background: #315d46;
+    color: white;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 30px 35px;
+    min-width: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+.header h1 {
+    font-size: 27px;
+    color: #193e2d;
+}
+
+.header p {
+    color: #89968c;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.profile {
+    background: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.avatar {
+    background: #e4eee5;
+    color: #315d46;
+    padding: 10px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* Filter */
+.filter-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 22px;
+}
+
+select {
+    padding: 10px 14px;
+    border: 1px solid #e6ebe6;
+    background: white;
+    border-radius: 9px;
+    color: #405447;
+    outline: none;
+    cursor: pointer;
+}
+
+/* KPI Cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 13px;
+    border: 1px solid #edf0ed;
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    background: #eaf2eb;
+    color: #315d46;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 19px;
+    margin-bottom: 16px;
+}
+
+.stat-label {
+    color: #87948b;
+    font-size: 13px;
+}
+
+.stat-number {
+    font-size: 27px;
+    font-weight: 700;
+    margin: 7px 0;
+    color: #234a35;
+}
+
+.stat-change {
+    font-size: 11px;
+    color: #4c9564;
+}
+
+/* Sections */
+.section-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 650;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #98a39b;
+    font-size: 12px;
+    margin-bottom: 24px;
+}
+
+/* Growth Chart */
+.chart {
+    height: 190px;
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    border-bottom: 1px solid #e9eee9;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 46px,
+        #f0f3f0 47px
+    );
+}
+
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    height: 100%;
+    flex: 1;
+    gap: 8px;
+}
+
+.chart-bar {
+    width: 55%;
+    max-width: 35px;
+    background: #477b58;
+    border-radius: 6px 6px 0 0;
+    transition: height .3s;
+}
+
+.chart-bar:hover {
+    background: #8ab69a;
+}
+
+.chart-column span {
+    font-size: 11px;
+    color: #87948b;
+    padding-bottom: 8px;
+}
+
+/* Performance */
+.performance-item {
+    margin-bottom: 23px;
+}
+
+.performance-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.bar {
+    height: 10px;
+    background: #edf1ed;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background: #477b58;
+    border-radius: 10px;
+}
+
+.performance-note {
+    color: #89968c;
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+/* Department Analysis */
+.department {
+    margin-bottom: 19px;
+}
+
+.department-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+/* Turnover */
+.turnover-number {
+    font-size: 35px;
+    color: #28533b;
+    font-weight: 700;
+    margin: 15px 0 5px;
+}
+
+.turnover-desc {
+    color: #8c998f;
+    font-size: 12px;
+}
+
+.turnover-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    padding-top: 17px;
+    border-top: 1px solid #edf0ed;
+    font-size: 12px;
+}
+
+/* Table */
+.table-card {
+    background: white;
+    border-radius: 13px;
+    padding: 23px;
+    border: 1px solid #edf0ed;
+    margin-bottom: 22px;
+}
+
+.table-header {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    color: #8b978e;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 13px 10px;
+    border-bottom: 1px solid #edf0ed;
+}
+
+td {
+    padding: 16px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f2f0;
+}
+
+.score {
+    color: #438454;
+    font-weight: 650;
+}
+
+.tag {
+    background: #e9f4eb;
+    color: #438454;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.footer {
+    text-align: center;
+    color: #9ba69d;
+    font-size: 11px;
+    padding: 15px;
+}
+
+/* Responsive */
+@media(max-width: 1050px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 750px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .logo {
+        margin-bottom: 18px;
+    }
+
+    .nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+    }
+
+    .nav a {
+        white-space: nowrap;
+    }
+
+    .main {
+        padding: 22px 16px;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .table-card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
+
+@media(max-width: 450px) {
+    .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">HR<span> Portal</span></div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <nav class="nav">
+            <a href="hr-dashboard.html">▦ Dashboard</a>
+            <a href="#employees">♙ Employees</a>
+            <a href="#departments">▤ Departments</a>
+            <a href="#attendance">◷ Attendance</a>
+            <a href="#analytics" class="active">▧ Workforce Analytics</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <header class="header">
+            <div>
+                <h1>Workforce Analytics</h1>
+                <p>Analyze workforce data, employee performance and organizational trends.</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">HR</div>
+                <span>HR Administrator</span>
+            </div>
+        </header>
+
+        <!-- Filter -->
+        <div class="filter-row">
+            <select id="periodFilter">
+                <option value="2026">Year 2026</option>
+                <option value="2025">Year 2025</option>
+                <option value="2024">Year 2024</option>
+            </select>
+        </div>
+
+        <!-- KPI Cards -->
+        <section class="stats">
+
+            <div class="card">
+                <div class="stat-icon">♙</div>
+                <div class="stat-label">Total Workforce</div>
+                <div class="stat-number" id="workforce">248</div>
+                <div class="stat-change">↑ 8.2% from last year</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">↗</div>
+                <div class="stat-label">Average Performance</div>
+                <div class="stat-number" id="performance">87%</div>
+                <div class="stat-change">↑ 5.4% improvement</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">↘</div>
+                <div class="stat-label">Turnover Rate</div>
+                <div class="stat-number" id="turnover">4.2%</div>
+                <div class="stat-change">↓ 1.3% from last year</div>
+            </div>
+
+            <div class="card">
+                <div class="stat-icon">◷</div>
+                <div class="stat-label">Workforce Utilization</div>
+                <div class="stat-number" id="utilization">92%</div>
+                <div class="stat-change">↑ 3.1% this year</div>
+            </div>
+
+        </section>
+
+        <!-- Growth and Performance -->
+        <section class="section-grid" id="analytics">
+
+            <div class="card">
+                <h3 class="section-title">Workforce Growth</h3>
+                <p class="subtitle">Employee headcount throughout the year</p>
+
+                <div class="chart" id="growthChart">
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:55%"></div>
+                        <span>Jan</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:60%"></div>
+                        <span>Feb</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:65%"></div>
+                        <span>Mar</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:70%"></div>
+                        <span>Apr</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:75%"></div>
+                        <span>May</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:80%"></div>
+                        <span>Jun</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:85%"></div>
+                        <span>Jul</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:90%"></div>
+                        <span>Aug</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:95%"></div>
+                        <span>Sep</span>
+                    </div>
+
+                    <div class="chart-column">
+                        <div class="chart-bar" style="height:100%"></div>
+                        <span>Oct</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="section-title">Performance Distribution</h3>
+                <p class="subtitle">Employee performance ratings</p>
+
+                <div class="performance-item">
+                    <div class="performance-info">
+                        <span>Excellent</span>
+                        <b>35%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:35%"></div>
+                    </div>
+                    <div class="performance-note">87 Employees</div>
+                </div>
+
+                <div class="performance-item">
+                    <div class="performance-info">
+                        <span>Good</span>
+                        <b>45%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:45%"></div>
+                    </div>
+                    <div class="performance-note">112 Employees</div>
+                </div>
+
+                <div class="performance-item">
+                    <div class="performance-info">
+                        <span>Needs Improvement</span>
+                        <b>20%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:20%"></div>
+                    </div>
+                    <div class="performance-note">49 Employees</div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Department and Turnover -->
+        <section class="section-grid" id="departments">
+
+            <div class="card">
+                <h3 class="section-title">Department Performance</h3>
+                <p class="subtitle">Average performance by department</p>
+
+                <div class="department">
+                    <div class="department-info">
+                        <span>IT Department</span>
+                        <b>94%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:94%"></div>
+                    </div>
+                </div>
+
+                <div class="department">
+                    <div class="department-info">
+                        <span>Finance</span>
+                        <b>89%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:89%"></div>
+                    </div>
+                </div>
+
+                <div class="department">
+                    <div class="department-info">
+                        <span>Marketing</span>
+                        <b>85%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:85%"></div>
+                    </div>
+                </div>
+
+                <div class="department">
+                    <div class="department-info">
+                        <span>Human Resources</span>
+                        <b>91%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:91%"></div>
+                    </div>
+                </div>
+
+                <div class="department">
+                    <div class="department-info">
+                        <span>Operations</span>
+                        <b>82%</b>
+                    </div>
+                    <div class="bar">
+                        <div class="fill" style="width:82%"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card" id="attendance">
+                <h3 class="section-title">Employee Turnover</h3>
+                <p class="subtitle">Workforce retention overview</p>
+
+                <div class="turnover-number">4.2%</div>
+                <div class="turnover-desc">Annual employee turnover rate</div>
+
+                <div class="turnover-details">
+                    <span>New Hires <b>18</b></span>
+                    <span>Departures <b>10</b></span>
+                </div>
+
+                <div class="turnover-details">
+                    <span>Retention Rate</span>
+                    <b style="color:#438454">95.8%</b>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Employee Analysis -->
+        <section class="table-card" id="employees">
+
+            <div class="table-header">
+                <h3 class="section-title">Employee Performance Overview</h3>
+                <p class="subtitle">Performance evaluation by employee</p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Department</th>
+                        <th>Performance Score</th>
+                        <th>Rating</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Ahmed Mohammed</td>
+                        <td>IT</td>
+                        <td class="score">94%</td>
+                        <td><span class="tag">Excellent</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Sara Khalid</td>
+                        <td>HR</td>
+                        <td class="score">91%</td>
+                        <td><span class="tag">Excellent</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Nora Abdullah</td>
+                        <td>Marketing</td>
+                        <td class="score">85%</td>
+                        <td><span class="tag">Good</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Omar Saleh</td>
+                        <td>Finance</td>
+                        <td class="score">89%</td>
+                        <td><span class="tag">Good</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Layla Hassan</td>
+                        <td>Operations</td>
+                        <td class="score">78%</td>
+                        <td><span class="tag">Good</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
+
+        <div class="footer">
+            HR Portal © 2026 | Workforce Analytics
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+// Year filter with sample data
+const yearlyData = {
+    "2026": {
+        workforce: 248,
+        performance: "87%",
+        turnover: "4.2%",
+        utilization: "92%"
+    },
+    "2025": {
+        workforce: 229,
+        performance: "82%",
+        turnover: "5.5%",
+        utilization: "89%"
+    },
+    "2024": {
+        workforce: 210,
+        performance: "79%",
+        turnover: "6.8%",
+        utilization: "85%"
+    }
+};
+
+document.getElementById("periodFilter")
+.addEventListener("change", function() {
+
+    const data = yearlyData[this.value];
+
+    document.getElementById("workforce").textContent =
+        data.workforce;
+
+    document.getElementById("performance").textContent =
+        data.performance;
+
+    document.getElementById("turnover").textContent =
+        data.turnover;
+
+    document.getElementById("utilization").textContent =
+        data.utilization;
+
+});
+</script>
+
+</body>
+</html>
